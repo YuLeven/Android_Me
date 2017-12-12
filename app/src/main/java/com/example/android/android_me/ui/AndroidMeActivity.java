@@ -22,6 +22,7 @@ import android.os.Bundle;
 
 import com.example.android.android_me.R;
 import com.example.android.android_me.data.AndroidImageAssets;
+import com.example.android.android_me.util.Util;
 
 // This activity will display a custom Android image composed of three body parts: head, body, and legs
 public class AndroidMeActivity extends AppCompatActivity {
@@ -56,7 +57,12 @@ public class AndroidMeActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // We call this helper (Igor?) function that will attach
             // our body parts onto the current view
-            attachBodyPartsToScreen();
+            Util.attachBodyPartsToScreen(
+                    getSupportFragmentManager(),
+                    mHeadFragment,
+                    mBodyFragment,
+                    mLegsFragment
+            );
         }
     }
 
@@ -78,17 +84,5 @@ public class AndroidMeActivity extends AppCompatActivity {
         mHeadFragment.setListIndex(initialIndex);
         mBodyFragment.setListIndex(initialIndex);
         mLegsFragment.setListIndex(initialIndex);
-    }
-
-    /**
-     * A Victor Frankenstein style function to attach body parts onto something
-     */
-    private void attachBodyPartsToScreen() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.head_container, mHeadFragment)
-                .add(R.id.body_container, mBodyFragment)
-                .add(R.id.legs_container, mLegsFragment)
-                .commit();
     }
 }

@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 
 import com.example.android.android_me.R;
+import com.example.android.android_me.data.AndroidImageAssets;
+import com.example.android.android_me.util.Util;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -45,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
     private int bodyIndex;
     private int legsIndex;
     private Button mNextButton;
+    private boolean mTwoPane;
+    private BodyPartFragment mHeadFragment;
+    private BodyPartFragment mBodyFragment;
+    private BodyPartFragment mLegsFragment;
 
     private static final int HEAD = 0;
     private static final int BODY = 1;
@@ -64,12 +71,87 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mNextButton = (Button) findViewById(R.id.next_button);
-        mNextButton.setEnabled(false);
+
+        // If we're in two pane mode, inflate the Android body parts
+        mTwoPane = findViewById(R.id.android_me_linear_layout) != null;
+        if (mTwoPane) {
+
+            // Create a new head BodyPartFragment
+            mHeadFragment = new BodyPartFragment();
+            mHeadFragment.setImageIds(AndroidImageAssets.getHeads());
+            // Create a new body BodyPartFragment
+            mBodyFragment = new BodyPartFragment();
+            mBodyFragment.setImageIds(AndroidImageAssets.getBodies());
+            // Create a new legs BodyPartFragment
+            mLegsFragment = new BodyPartFragment();
+            mLegsFragment.setImageIds(AndroidImageAssets.getLegs());
+            mNextButton = (Button) findViewById(R.id.next_button);
+            mNextButton.setEnabled(false);
+
+            mNextButton.setVisibility(View.GONE);
+            if (savedInstanceState == null) {
+                // We call this helper (Igor?) function that will attach
+                // our body parts onto the current view
+                Util.attachBodyPartsToScreen(
+                        getSupportFragmentManager(),
+                        mHeadFragment,
+                        mBodyFragment,
+                        mLegsFragment
+                );
+            }
+        }
+
+        GridView gridView = (GridView) findViewById(R.id.images_grid_view);
+        gridView.setNumColumns(2);
     }
 
-    // Define the behavior for onImageSelected
+
+    /**
+     * Handles app behaviour when a image is tapped in MasterListFragment
+     * @param position - The position of the tapped image
+     */
     public void onImageSelected(int position) {
+        if (mTwoPane) {
+            handleTwoPanelImageSelected(position);
+        } else {
+            handleSinglePanelImageSelected(position);
+        }
+    }
+
+    /**
+     * Handles image taps on double panels
+     * @param position - The position of the tapped image
+     */
+    private void handleTwoPanelImageSelected(int position) {
+        BodyPartFragment newBodyPart = new BodyPartFragment();
+
+        switch (getBodyPart(position)) {
+            case HEAD:
+                newBodyPart.setImageIds(AndroidImageAssets.getHeads());
+                newBodyPart.setListIndex(getBodyPartIndex(HEAD, position));
+                replaceBodyPart(R.id.head_container, newBodyPart);
+                break;
+            case BODY:
+                newBodyPart.setImageIds(AndroidImageAssets.getBodies());
+                newBodyPart.setListIndex(getBodyPartIndex(BODY, position));
+                replaceBodyPart(R.id.body_container, newBodyPart);
+                break;
+            case LEGS:
+                newBodyPart.setImageIds(AndroidImageAssets.getLegs());
+                newBodyPart.setListIndex(getBodyPartIndex(LEGS, position));
+                replaceBodyPart(R.id.legs_container, newBodyPart);
+                break;
+            case UNKNOWN_PART:
+                Log.v(LOG_TAG, "The clicked android part exceeds the expected boundary for head, body and legs (12 for each)");
+                break;
+        }
+    }
+
+    /**
+     * Handles image taps on single panels
+     * @param position - The position of the tapped image
+     */
+    private void handleSinglePanelImageSelected(int position) {
         switch (getBodyPart(position)) {
             case HEAD: headIndex = getBodyPartIndex(HEAD, position);
                 break;
@@ -99,6 +181,23 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         });
     }
 
+    /**
+     * Replaces the passed fragment id with the passed body part
+     * @param viewID - The ID of the view to be replaced
+     * @param newBodyPart - The body part which will replace the current one
+     */
+    private void replaceBodyPart(int viewID, BodyPartFragment newBodyPart) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(viewID, newBodyPart)
+                .commit();
+    }
+
+    /**
+     * Gets the body part which was tapped relative to its position in
+     * the group of 12 heads, bodies and legs
+     * @param pos - The tapped position
+     * @return - A type-safe integer representing the tapped body part
+     */
     private @BodyPart int getBodyPart(int pos) {
         switch (pos / 12) {
             case 0:
@@ -112,6 +211,14 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         }
     }
 
+    /**
+     * Gets the index of the image asset based on the body part
+     * This is done by calculating it's relative position to the group of
+     * 12 heads, bodies and legs
+     * @param part - The part of the body whose ID will be retrieved
+     * @param pos - The absolute position tapped on the grid view
+     * @return - The position of the body part within its array
+     */
     private int getBodyPartIndex(@BodyPart int part, int pos) {
         return pos - 12 * part;
     }
