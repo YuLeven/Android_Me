@@ -26,55 +26,15 @@ import com.example.android.android_me.data.AndroidImageAssets;
 // This activity will display a custom Android image composed of three body parts: head, body, and legs
 public class AndroidMeActivity extends AppCompatActivity {
 
-<<<<<<< Updated upstream
-=======
     private BodyPartFragment mHeadFragment;
     private BodyPartFragment mBodyFragment;
     private BodyPartFragment mLegsFragment;
->>>>>>> Stashed changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_android_me);
 
-<<<<<<< Updated upstream
-        // Only create new fragments when there is no previously saved state
-        if(savedInstanceState == null) {
-
-            // TODO (5) Retrieve list index values that were sent through an intent; use them to display the desired Android-Me body part image
-                // Use setListindex(int index) to set the list index for all BodyPartFragments
-
-            // Create a new head BodyPartFragment
-            BodyPartFragment headFragment = new BodyPartFragment();
-
-            // Set the list of image id's for the head fragment and set the position to the second image in the list
-            headFragment.setImageIds(AndroidImageAssets.getHeads());
-            headFragment.setListIndex(1);
-
-            // Add the fragment to its container using a FragmentManager and a Transaction
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
-            fragmentManager.beginTransaction()
-                    .add(R.id.head_container, headFragment)
-                    .commit();
-
-            // Create and display the body and leg BodyPartFragments
-
-            BodyPartFragment bodyFragment = new BodyPartFragment();
-            bodyFragment.setImageIds(AndroidImageAssets.getBodies());
-            fragmentManager.beginTransaction()
-                    .add(R.id.body_container, bodyFragment)
-                    .commit();
-
-            BodyPartFragment legFragment = new BodyPartFragment();
-            legFragment.setImageIds(AndroidImageAssets.getLegs());
-            fragmentManager.beginTransaction()
-                    .add(R.id.leg_container, legFragment)
-                    .commit();
-        }
-
-=======
         // Create a new head BodyPartFragment
         mHeadFragment = new BodyPartFragment();
         mHeadFragment.setmImageIds(AndroidImageAssets.getHeads());
@@ -118,6 +78,5 @@ public class AndroidMeActivity extends AppCompatActivity {
                 .add(R.id.body_container, mBodyFragment)
                 .add(R.id.legs_container, mLegsFragment)
                 .commit();
->>>>>>> Stashed changes
     }
 }
