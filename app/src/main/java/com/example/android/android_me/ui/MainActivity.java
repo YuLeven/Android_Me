@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mNextButton = (Button) findViewById(R.id.next_button);
+        mNextButton.setEnabled(false);
 
         // If we're in two pane mode, inflate the Android body parts
         mTwoPane = findViewById(R.id.android_me_linear_layout) != null;
@@ -85,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
             // Create a new legs BodyPartFragment
             mLegsFragment = new BodyPartFragment();
             mLegsFragment.setImageIds(AndroidImageAssets.getLegs());
-            mNextButton = (Button) findViewById(R.id.next_button);
-            mNextButton.setEnabled(false);
 
             mNextButton.setVisibility(View.GONE);
             if (savedInstanceState == null) {
