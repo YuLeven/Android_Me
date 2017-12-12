@@ -26,12 +26,19 @@ import com.example.android.android_me.data.AndroidImageAssets;
 // This activity will display a custom Android image composed of three body parts: head, body, and legs
 public class AndroidMeActivity extends AppCompatActivity {
 
+<<<<<<< Updated upstream
+=======
+    private BodyPartFragment mHeadFragment;
+    private BodyPartFragment mBodyFragment;
+    private BodyPartFragment mLegsFragment;
+>>>>>>> Stashed changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_android_me);
 
+<<<<<<< Updated upstream
         // Only create new fragments when there is no previously saved state
         if(savedInstanceState == null) {
 
@@ -67,5 +74,50 @@ public class AndroidMeActivity extends AppCompatActivity {
                     .commit();
         }
 
+=======
+        // Create a new head BodyPartFragment
+        mHeadFragment = new BodyPartFragment();
+        mHeadFragment.setmImageIds(AndroidImageAssets.getHeads());
+        // Create a new body BodyPartFragment
+        mBodyFragment = new BodyPartFragment();
+        mBodyFragment.setmImageIds(AndroidImageAssets.getBodies());
+        // Create a new legs BodyPartFragment
+        mLegsFragment = new BodyPartFragment();
+        mLegsFragment.setmImageIds(AndroidImageAssets.getLegs());
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mHeadFragment.setmListIndex(bundle.getInt(MainActivity.HEAD_BUNDLE_ID));
+            mBodyFragment.setmListIndex(bundle.getInt(MainActivity.BODY_BUNDLE_ID));
+            mLegsFragment.setmListIndex(bundle.getInt(MainActivity.LEGS_BUNDLE_ID));
+        } else {
+            // Here we set the initial images for the body parts
+            initializeBodyPartsToDefaultIndex(1);
+        }
+
+        if (savedInstanceState == null) {
+            // We call this helper (Igor?) funciton that will attach
+            // our body parts onto the current view
+            attachBodyPartsToScreen();
+        }
+    }
+
+    private void initializeBodyPartsToDefaultIndex(int intialIndex) {
+        mHeadFragment.setmListIndex(intialIndex);
+        mBodyFragment.setmListIndex(intialIndex);
+        mLegsFragment.setmListIndex(intialIndex);
+    }
+
+    /**
+     * A Victor Frankenstein style function to attach body parts onto something
+     */
+    private void attachBodyPartsToScreen() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.head_container, mHeadFragment)
+                .add(R.id.body_container, mBodyFragment)
+                .add(R.id.legs_container, mLegsFragment)
+                .commit();
+>>>>>>> Stashed changes
     }
 }

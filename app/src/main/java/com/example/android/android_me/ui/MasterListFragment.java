@@ -33,8 +33,11 @@ import com.example.android.android_me.data.AndroidImageAssets;
 // The list appears as a grid of images
 public class MasterListFragment extends Fragment {
 
-    // Define a new interface OnImageClickListener that triggers a callback in the host activity
-    OnImageClickListener mCallback;
+    // This is the adapter responsible for populating
+    // the grid view with several Android body parts.
+    private MasterListAdapter mMasterListAdapter;
+    private GridView mGridView;
+    protected OnImageClickListener mCallback;
 
     // OnImageClickListener interface, calls a method in the host activity named onImageSelected
     public interface OnImageClickListener {
@@ -71,15 +74,12 @@ public class MasterListFragment extends Fragment {
         // Get a reference to the GridView in the fragment_master_list xml layout file
         GridView gridView = (GridView) rootView.findViewById(R.id.images_grid_view);
 
-        // Create the adapter
-        // This adapter takes in the context and an ArrayList of ALL the image resources to display
-        MasterListAdapter mAdapter = new MasterListAdapter(getContext(), AndroidImageAssets.getAll());
+        // Get the grid view. We will both return it and use it's reference to set it's adapter
+        View rootView = inflater.inflate(R.layout.fragment_master_list, container, false);
+        mGridView = (GridView) rootView.findViewById(R.id.images_grid_view);
+        mGridView.setAdapter(mMasterListAdapter);
 
-        // Set the adapter on the GridView
-        gridView.setAdapter(mAdapter);
-
-        // Set a click listener on the gridView and trigger the callback onImageSelected when an item is clicked
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Trigger the callback method and pass in the position that was clicked
