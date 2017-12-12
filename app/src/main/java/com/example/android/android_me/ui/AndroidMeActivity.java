@@ -36,11 +36,11 @@ public class AndroidMeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_android_me);
 
-        // TODO (5) Only create new fragments when there is no previously saved state
-
-        // We call this helper (Igor?) funciton that will attach
-        // our body parts onto the current view
-        attachBodyPartsToScreen();
+        if (savedInstanceState == null) {
+            // We call this helper (Igor?) funciton that will attach
+            // our body parts onto the current view
+            attachBodyPartsToScreen();
+        }
     }
 
     private void setInitialBodyPartsImages(int intialIndex) {
