@@ -37,8 +37,10 @@ public class MasterListFragment extends Fragment {
     // This is the adapter responsible for populating
     // the grid view with several Android body parts.
     private MasterListAdapter mMasterListAdapter;
+    private GridView mGridView;
     protected OnImageClickListener mCallback;
 
+    // OnImageClickListener interface, calls a method in the host activity named onImageSelected
     public interface OnImageClickListener {
         void onImageSelected(int position);
     }
@@ -58,23 +60,31 @@ public class MasterListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mMasterListAdapter = new MasterListAdapter(getContext(), AndroidImageAssets.getAll());
+    }
+
+    // Inflates the GridView of all AndroidMe images
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Initialize the adapter
-        mMasterListAdapter = new MasterListAdapter(getContext(), AndroidImageAssets.getAll());
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Get the grid view. We will both return it and use it's reference to set it's adapter
-        GridView rootView = (GridView) inflater.inflate(R.layout.fragment_master_list, container, false);
-        rootView.setAdapter(mMasterListAdapter);
+        final View rootView = inflater.inflate(R.layout.fragment_master_list, container, false);
+        mGridView = (GridView) rootView.findViewById(R.id.images_grid_view);
+        mGridView.setAdapter(mMasterListAdapter);
 
-        rootView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                mCallback.onImageSelected(pos);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // Trigger the callback method and pass in the position that was clicked
+                mCallback.onImageSelected(position);
             }
         });
 
+        // Return the root view
         return rootView;
     }
 }

@@ -79,11 +79,12 @@ public class BodyPartFragment extends Fragment {
         return rootView;
     }
 
-    public void setmImageIds(List<Integer> mImageIds) {
+    // Setter for the stored list of images and the index to display
+    public void setImageIds(List<Integer> mImageIds) {
         this.mImageIds = mImageIds;
     }
 
-    public void setmListIndex(int mListIndex) {
+    public void setListIndex(int mListIndex) {
         this.mListIndex = mListIndex;
     }
 
