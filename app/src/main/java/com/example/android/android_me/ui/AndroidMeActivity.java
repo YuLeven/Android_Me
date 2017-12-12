@@ -16,6 +16,7 @@
 
 package com.example.android.android_me.ui;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -39,6 +40,14 @@ public class AndroidMeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_android_me);
 
-        // TODO (5) Create a new BodyPartFragment instance and display it using the FragmentManager
+        // Fetch a new instance of the BodyPartFragment to display the Android's head
+        BodyPartFragment headFragment = new BodyPartFragment();
+
+        // Uses a FragmentManager to add the fragment to the current view
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.head_container, headFragment)
+                .commit();
     }
 }
