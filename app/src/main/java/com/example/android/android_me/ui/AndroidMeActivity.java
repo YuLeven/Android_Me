@@ -31,13 +31,13 @@ public class AndroidMeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_android_me);
 
         // Fetch a new instance of the BodyPartFragment to display the Android's head
-        BodyPartFragment headFreagment = new BodyPartFragment();
+        BodyPartFragment headFragment = new BodyPartFragment();
 
         // Uses a FragmentManager to add the fragment to the current view
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .add(R.id.head_container, headFreagment)
+                .add(R.id.head_container, headFragment)
                 .commit();
     }
 }
