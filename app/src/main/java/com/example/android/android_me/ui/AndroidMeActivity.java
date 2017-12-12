@@ -37,35 +37,47 @@ public class AndroidMeActivity extends AppCompatActivity {
 
         // Create a new head BodyPartFragment
         mHeadFragment = new BodyPartFragment();
-        mHeadFragment.setmImageIds(AndroidImageAssets.getHeads());
+        mHeadFragment.setImageIds(AndroidImageAssets.getHeads());
         // Create a new body BodyPartFragment
         mBodyFragment = new BodyPartFragment();
-        mBodyFragment.setmImageIds(AndroidImageAssets.getBodies());
+        mBodyFragment.setImageIds(AndroidImageAssets.getBodies());
         // Create a new legs BodyPartFragment
         mLegsFragment = new BodyPartFragment();
-        mLegsFragment.setmImageIds(AndroidImageAssets.getLegs());
+        mLegsFragment.setImageIds(AndroidImageAssets.getLegs());
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mHeadFragment.setmListIndex(bundle.getInt(MainActivity.HEAD_BUNDLE_ID));
-            mBodyFragment.setmListIndex(bundle.getInt(MainActivity.BODY_BUNDLE_ID));
-            mLegsFragment.setmListIndex(bundle.getInt(MainActivity.LEGS_BUNDLE_ID));
+            intializeBodyPartsWithBundleContents(bundle);
         } else {
             // Here we set the initial images for the body parts
             initializeBodyPartsToDefaultIndex(1);
         }
 
         if (savedInstanceState == null) {
-            // We call this helper (Igor?) funciton that will attach
+            // We call this helper (Igor?) function that will attach
             // our body parts onto the current view
             attachBodyPartsToScreen();
         }
     }
 
-    private void initializeBodyPartsToDefaultIndex(int intialIndex) {
-        mHeadFragment.setmListIndex(intialIndex);
-        mBodyFragment.setmListIndex(intialIndex);
-        mLegsFragment.setmListIndex(intialIndex);
+    /**
+     * Initializes the Android body parts with the bundle contents
+     * @param bundle - The bundle which will be used to initialize the body parts
+     */
+    private void intializeBodyPartsWithBundleContents(Bundle bundle) {
+        mHeadFragment.setListIndex(bundle.getInt(MainActivity.HEAD_BUNDLE_ID));
+        mBodyFragment.setListIndex(bundle.getInt(MainActivity.BODY_BUNDLE_ID));
+        mLegsFragment.setListIndex(bundle.getInt(MainActivity.LEGS_BUNDLE_ID));
+    }
+
+    /**
+     * Initializes all three body parts to a default index
+     * @param initialIndex - The index which will be used
+     */
+    private void initializeBodyPartsToDefaultIndex(int initialIndex) {
+        mHeadFragment.setListIndex(initialIndex);
+        mBodyFragment.setListIndex(initialIndex);
+        mLegsFragment.setListIndex(initialIndex);
     }
 
     /**

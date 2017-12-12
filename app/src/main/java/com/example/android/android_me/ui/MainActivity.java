@@ -19,12 +19,10 @@ package com.example.android.android_me.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.android.android_me.R;
 
@@ -82,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mNextButton = (Button) findViewById(R.id.next_button);
+        mNextButton.setEnabled(false);
     }
 
     // Define the behavior for onImageSelected
@@ -106,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         final Intent intent = new Intent(this, AndroidMeActivity.class);
         intent.putExtras(bundle);
 
+        mNextButton.setEnabled(true);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

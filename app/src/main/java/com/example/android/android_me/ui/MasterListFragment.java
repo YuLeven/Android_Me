@@ -18,6 +18,7 @@ package com.example.android.android_me.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,18 +65,18 @@ public class MasterListFragment extends Fragment {
     public MasterListFragment() {
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mMasterListAdapter = new MasterListAdapter(getContext(), AndroidImageAssets.getAll());
+    }
+
     // Inflates the GridView of all AndroidMe images
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        final View rootView = inflater.inflate(R.layout.fragment_master_list, container, false);
-
-        // Get a reference to the GridView in the fragment_master_list xml layout file
-        GridView gridView = (GridView) rootView.findViewById(R.id.images_grid_view);
-
         // Get the grid view. We will both return it and use it's reference to set it's adapter
-        View rootView = inflater.inflate(R.layout.fragment_master_list, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_master_list, container, false);
         mGridView = (GridView) rootView.findViewById(R.id.images_grid_view);
         mGridView.setAdapter(mMasterListAdapter);
 
