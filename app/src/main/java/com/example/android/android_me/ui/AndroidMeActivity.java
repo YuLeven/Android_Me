@@ -26,6 +26,10 @@ import com.example.android.android_me.data.AndroidImageAssets;
 // This activity will display a custom Android image composed of three body parts: head, body, and legs
 public class AndroidMeActivity extends AppCompatActivity {
 
+    private BodyPartFragment mHeadFragment;
+    private BodyPartFragment mBodyFragment;
+    private BodyPartFragment mLegsFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,34 +38,43 @@ public class AndroidMeActivity extends AppCompatActivity {
 
         // TODO (5) Only create new fragments when there is no previously saved state
 
-        // Create a new head BodyPartFragment
-        BodyPartFragment headFragment = new BodyPartFragment();
+        // We call this helper (Igor?) funciton that will attach
+        // our body parts onto the current view
+        attachBodyPartsToScreen();
+    }
 
-        // Set the list of image id's for the head fragment and set the position to the second image in the list
-        headFragment.setImageIds(AndroidImageAssets.getHeads());
-        headFragment.setListIndex(1);
+    private void setInitialBodyPartsImages(int intialIndex) {
+        // Create a new head BodyPartFragment
+        mHeadFragment = new BodyPartFragment();
+        mHeadFragment.setmImageIds(AndroidImageAssets.getHeads());
+        mHeadFragment.setmListIndex(intialIndex);
+
+        // Create a new body BodyPartFragment
+        mBodyFragment = new BodyPartFragment();
+        mBodyFragment.setmImageIds(AndroidImageAssets.getBodies());
+        mBodyFragment.setmListIndex(intialIndex);
+
+        // Create a new legs BodyPartFragment
+        mLegsFragment = new BodyPartFragment();
+        mLegsFragment.setmImageIds(AndroidImageAssets.getLegs());
+        mLegsFragment.setmListIndex(intialIndex);
+    }
+
+    /**
+     * A Victor Frankenstein style function to attach body parts onto something
+     */
+    private void attachBodyPartsToScreen() {
+
+        // Here we set the initial images for the body parts
+        setInitialBodyPartsImages(1);
 
         // Add the fragment to its container using a FragmentManager and a Transaction
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()
-                .add(R.id.head_container, headFragment)
+                .add(R.id.head_container, mHeadFragment)
+                .add(R.id.body_container, mBodyFragment)
+                .add(R.id.legs_container, mLegsFragment)
                 .commit();
-
-        // Create and display the body and leg BodyPartFragments
-
-        BodyPartFragment bodyFragment = new BodyPartFragment();
-        bodyFragment.setImageIds(AndroidImageAssets.getBodies());
-        fragmentManager.beginTransaction()
-                .add(R.id.body_container, bodyFragment)
-                .commit();
-
-        BodyPartFragment legFragment = new BodyPartFragment();
-        legFragment.setImageIds(AndroidImageAssets.getLegs());
-        fragmentManager.beginTransaction()
-                .add(R.id.leg_container, legFragment)
-                .commit();
-
-
     }
 }
