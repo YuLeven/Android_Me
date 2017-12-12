@@ -78,13 +78,11 @@ public class MainActivity extends AppCompatActivity implements MasterListFragmen
         mTwoPane = findViewById(R.id.android_me_linear_layout) != null;
         if (mTwoPane) {
 
-            // Create a new head BodyPartFragment
+            // Create and set BodyPartFragments for the three boy parts
             mHeadFragment = new BodyPartFragment();
             mHeadFragment.setImageIds(AndroidImageAssets.getHeads());
-            // Create a new body BodyPartFragment
             mBodyFragment = new BodyPartFragment();
             mBodyFragment.setImageIds(AndroidImageAssets.getBodies());
-            // Create a new legs BodyPartFragment
             mLegsFragment = new BodyPartFragment();
             mLegsFragment.setImageIds(AndroidImageAssets.getLegs());
 
